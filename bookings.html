@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Bookings · ReelBook{% endblock %}
+{% block content %}
+<section class="hero compact"><p class="eyebrow">YOUR RESERVATIONS</p><h1>{% if confirmation %}Booking confirmed{% else %}Booking history{% endif %}</h1></section>
+{% if confirmation %}<article class="panel receipt"><span class="tag">{{ confirmation.status }}</span><h2>{{ confirmation.title }}</h2><p>Booking #{{ confirmation.id }} · {{ confirmation.show_time }}</p><p><strong>Seats:</strong> {{ confirmation.seats }}</p><p><strong>Name:</strong> {{ confirmation.customer_name }}</p><p><strong>Total:</strong> ₹{{ "%.0f"|format(confirmation.price * (confirmation.seats.split(', ')|length)) }}</p><a class="button" href="{{ url_for('bookings') }}">View all bookings</a></article>
+{% else %}
+{% for b in bookings %}<article class="panel booking-row"><div><span class="tag">{{ b.status }}</span><h3>{{ b.title }}</h3><p>{{ b.show_time }} · Seats: {{ b.seats or "None" }}</p><small>{{ b.customer_name }} · Booking #{{ b.id }}</small></div>
+{% if b.status == "CONFIRMED" %}<form method="post" action="{{ url_for('cancel', booking_id=b.id) }}" data-confirm="Cancel this booking?"><button class="button danger" type="submit">Cancel</button></form>{% endif %}</article>{% else %}<div class="panel">No bookings yet. <a href="{{ url_for('index') }}">Browse movies</a>.</div>{% endfor %}
+{% endif %}{% endblock %}

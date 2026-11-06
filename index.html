@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Movies · ReelBook{% endblock %}
+{% block content %}
+<section class="hero"><p class="eyebrow">YOUR NEXT MOVIE NIGHT</p><h1>Stories worth<br><span>showing up for.</span></h1><p>Browse the lineup and reserve your seats.</p></section>
+<h2>Now showing</h2><div class="grid">
+{% for item in movies %}<article class="movie card"><div class="poster">{{ item.movie.title[0] }}</div><div class="card-body">
+<span class="tag">{{ item.movie.genre }} · {{ item.movie.duration }} min</span><h3>{{ item.movie.title }}</h3><p>{{ item.movie.description }}</p>
+{% for show in item.shows %}<a class="show-link" href="{{ url_for('book', show_id=show.show_id) }}">{{ show.show_time }} <strong>₹{{ "%.0f"|format(show.price) }} · Book</strong></a>{% endfor %}
+</div></article>{% endfor %}
+</div>{% endblock %}

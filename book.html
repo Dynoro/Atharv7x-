@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Choose seats · ReelBook{% endblock %}
+{% block content %}
+<a class="back" href="{{ url_for('index') }}">← Back to movies</a>
+<section class="panel"><p class="eyebrow">RESERVE YOUR SEATS</p><h1>{{ show.title }}</h1><p>{{ show.show_time }} · ₹{{ "%.0f"|format(show.price) }} per seat</p>
+<div class="screen">SCREEN THIS WAY</div>
+<form method="post" id="booking-form">
+<div class="seat-grid">{% for seat in seats %}
+<label class="seat {% if seat in booked %}taken{% endif %}">
+<input type="checkbox" name="seats" value="{{ seat }}" {% if seat in booked %}disabled{% endif %}>
+<span>{{ seat }}</span></label>{% endfor %}</div>
+<div class="legend"><span>Available</span><span class="taken-key">Booked</span><span class="selected-key">Selected</span></div>
+<div class="form-grid"><label>Your name<input name="customer_name" maxlength="80" required></label><label>Email address<input type="email" name="email" maxlength="120" required></label></div>
+<p id="selection-summary">0 seats selected</p><button class="button" type="submit">Confirm booking</button>
+</form></section>{% endblock %}
